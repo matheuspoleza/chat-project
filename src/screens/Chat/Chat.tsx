@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import stateApi from '../../api/stateApi';
+import capitalize from '../../utils/capitalize';
 import { ChatContainer, ChatInteraction, ChatInteractionList } from './Chat.styles';
 
 interface Props {
@@ -46,7 +47,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
   return (
     <ChatContainer>
       <div className="ui threaded comments" style={{ width: '100%' }}>
-        <h3 className="ui dividing header">{userID} Chat</h3>
+        <h3 className="ui dividing header">{capitalize(userID)} Chat</h3>
 
         <ChatInteraction>
           <ChatInteractionList>
