@@ -1,4 +1,4 @@
-import { TraceType } from '@voiceflow/general-types';
+import { GeneralTrace, TraceType } from '@voiceflow/general-types';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,6 +15,16 @@ const useChatSection = (userID: string) => {
     dispatch(sendChatMessage({ userID, message }));
   };
 
+  const sendTraceMessage = (trace: GeneralTrace) => {
+    dispatch(addTraceMessage({ userID, trace }));
+  };
+
+  const playAudio = (audioSource: string, onEnded: () => void) => {
+    const sound = new Audio(audioSource);
+    sound.addEventListener('ended', onEnded);
+    sound.play();
+  };
+
   const handleNewTraces = (counter = 0) => {
     const traces = chatSection.currentTraces;
     if (!traces) return;
@@ -27,14 +37,10 @@ const useChatSection = (userID: string) => {
     }
 
     if (message.type === TraceType.SPEAK && message.payload.src) {
-      dispatch(addTraceMessage({ userID, trace: message }));
-      const sound = new Audio(message.payload.src);
-      sound.addEventListener('ended', () => {
-        handleNewTraces(counter + 1);
-      });
-      sound.play();
+      sendTraceMessage(message);
+      playAudio(message.payload.src, () => handleNewTraces(counter + 1));
     } else {
-      dispatch(addTraceMessage({ userID, trace: message }));
+      sendTraceMessage(message);
       handleNewTraces(counter + 1);
     }
   };
