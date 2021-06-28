@@ -52,7 +52,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
   };
 
   const finishChatSection = () => {
-    setPreviousSections([...previousSections, { interactions: previousInteractions }]);
+    setPreviousSections((previousSections) => [...previousSections, { interactions: [...previousInteractions, currentInteraction] }]);
     setPreviousInteractions([]);
     setCurrentInteraction({ message: '', traces: [] });
     sendInteraction('');
@@ -87,7 +87,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
                       <div key={idx}>
                         <div>{interaction.message}</div>
                         {interaction.traces.map((trace, idx) => (
-                          <div key={idx}>{trace.payload.message}</div>
+                          <div key={idx}>{trace.payload?.message}</div>
                         ))}
                         <div>end of section</div>
                       </div>
