@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import stateApi from '../../api/stateApi';
+import ChatLoading from '../../components/ChatLoading';
 import capitalize from '../../utils/capitalize';
 import { ChatContainer, ChatInteraction, ChatInteractionList } from './Chat.styles';
 
@@ -21,6 +22,7 @@ interface Section {
 
 const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
   const { userID } = match.params;
+  const [isLoading, setIsLoading] = useState(false);
   const [previousInteractions, setPreviousInteractions] = useState<Interaction[]>([]);
   const [currentInteraction, setCurrentInteraction] = useState<Interaction>({ message: '', traces: [] });
   const [previousSections, setPreviousSections] = useState<Section[]>([]);
@@ -29,11 +31,19 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
 
   const sendInteraction = async (message: string) => {
     if (!currentInteraction) return;
-    const response = await stateApi.interact(message, userID);
 
-    for (let i = 0; i < response.length; i++) {
-      const responseMessage = response[i];
-      setCurrentInteraction((currentInteraction) => ({ ...currentInteraction, traces: [...currentInteraction.traces, responseMessage] }));
+    try {
+      setIsLoading(true);
+      const response = await stateApi.interact(message, userID);
+
+      for (let i = 0; i < response.length; i++) {
+        const responseMessage = response[i];
+        setCurrentInteraction((currentInteraction) => ({ ...currentInteraction, traces: [...currentInteraction.traces, responseMessage] }));
+      }
+    } catch (e) {
+      alert('Error sending error message');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -77,7 +87,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
     }
   }, [currentInteraction]);
 
-  React.useEffect(scrollToNewMessage, [currentInteraction]);
+  useEffect(scrollToNewMessage, [currentInteraction]);
 
   useEffect(startChatSection, []);
 
@@ -130,6 +140,8 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
           </ChatInteractionList>
 
           <div ref={messageEl} />
+
+          {isLoading && <ChatLoading />}
         </ChatInteraction>
 
         <form className="ui reply form" onSubmit={handleSend}>
