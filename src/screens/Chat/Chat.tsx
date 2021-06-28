@@ -4,6 +4,8 @@ import { RouteComponentProps } from 'react-router';
 
 import stateApi from '../../api/stateApi';
 import ChatLoading from '../../components/ChatLoading';
+import ChatMessage from '../../components/ChatMessage';
+import ChatTraces from '../../components/ChatTraces';
 import capitalize from '../../utils/capitalize';
 import { ChatContainer, ChatInteraction, ChatInteractionList } from './Chat.styles';
 
@@ -121,20 +123,16 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
               previousInteractions.map((interaction, idx) => {
                 return (
                   <div key={`previous-interactions-${idx}`}>
-                    <div>{interaction.message}</div>
-                    {interaction.traces.map((trace, idx) => (
-                      <div key={`previous-interaction-${idx}`}>{trace.payload?.message}</div>
-                    ))}
+                    {interaction.message && <ChatMessage message={interaction.message} />}
+                    {interaction.traces && <ChatTraces traces={interaction.traces} />}
                   </div>
                 );
               })}
 
             {currentInteraction && (
               <div>
-                <div>{currentInteraction.message}</div>
-                {currentInteraction.traces.map((trace, idx) => (
-                  <div key={`current-interaction-${idx}`}>{trace.payload?.message}</div>
-                ))}
+                {currentInteraction.message && <ChatMessage message={currentInteraction.message} />}
+                {currentInteraction.traces && <ChatTraces traces={currentInteraction.traces} />}
               </div>
             )}
           </ChatInteractionList>
