@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import stateApi from '../../api/stateApi';
+import { ChatContainer, ChatInteraction, ChatInteractionList } from './Chat.styles';
 
 interface Props {
   userID: string;
@@ -43,20 +44,28 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
   }, [messages]);
 
   return (
-    <div>
-      <h1>{userID} Chat</h1>
+    <ChatContainer>
+      <div className="ui threaded comments" style={{ width: '100%' }}>
+        <h3 className="ui dividing header">{userID} Chat</h3>
 
-      <dl>
-        {messages.map((message, idx) => {
-          return <dd key={idx}>{message}</dd>;
-        })}
-      </dl>
+        <ChatInteraction>
+          <ChatInteractionList>
+            {messages?.map((message, idx) => (
+              <div key={idx}>{message}</div>
+            ))}
+          </ChatInteractionList>
+        </ChatInteraction>
 
-      <form onSubmit={handleSend}>
-        <input ref={inputEl} placeholder="user input here" />
-        <button type="submit">send</button>
-      </form>
-    </div>
+        <form className="ui reply form" onSubmit={handleSend}>
+          <div className="field">
+            <input ref={inputEl} placeholder="Start typing ..." />
+          </div>
+          <button type="submit" className="ui button">
+            Send
+          </button>
+        </form>
+      </div>
+    </ChatContainer>
   );
 };
 

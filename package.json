@@ -33,11 +33,14 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "semantic-ui-css": "^2.4.1",
+    "styled-components": "^5.3.0",
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
     "@types/react": "^16.14.4",
     "@types/react-dom": "^17.0.3",
+    "@types/styled-components": "^5.1.10",
     "@voiceflow/commitlint-config": "^1.1.0",
     "@voiceflow/eslint-config": "3.2.2",
     "@voiceflow/git-branch-check": "^1.2.0",
