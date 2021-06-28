@@ -98,7 +98,6 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
                         {interaction.traces.map((trace, idx) => (
                           <div key={idx}>{trace.payload?.message}</div>
                         ))}
-                        <div>end of section</div>
                       </div>
                     );
                   })}
@@ -106,7 +105,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
               );
             })}
 
-            <div>section started</div>
+            <div>Section started</div>
 
             {previousInteractions &&
               previousInteractions.map((interaction, idx) => {
