@@ -3,8 +3,8 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
-import Chat from './Chat';
-import Dashboard from './Dashboard';
+import Chat from './screens/Chat';
+import Dashboard from './screens/Dashboard';
 
 const DASHBOARD_ROUTE = '/dashboard';
 const CHAT_ROUTE = '/chat/:userID';
