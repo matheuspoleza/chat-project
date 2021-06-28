@@ -1,3 +1,4 @@
+import { GeneralTrace } from '@voiceflow/general-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
@@ -9,40 +10,67 @@ interface Props {
   userID: string;
 }
 
+interface Interaction {
+  message?: string;
+  traces: GeneralTrace[];
+}
+
+interface Section {
+  interactions: Interaction[];
+}
+
 const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
   const { userID } = match.params;
-  const [messages, setMessages] = useState<string[]>([]);
+  const [previousInteractions, setPreviousInteractions] = useState<Interaction[]>([]);
+  const [currentInteraction, setCurrentInteraction] = useState<Interaction>({ message: '', traces: [] });
+  const [previousSections, setPreviousSections] = useState<Section[]>([]);
   const inputEl = useRef<HTMLInputElement>(null);
+
+  const sendInteraction = async (message: string) => {
+    if (!currentInteraction) return;
+    const response = await stateApi.interact(message, userID);
+
+    for (let i = 0; i < response.length; i++) {
+      const responseMessage = response[i];
+      setCurrentInteraction((currentInteraction) => ({ ...currentInteraction, traces: [...currentInteraction.traces, responseMessage] }));
+    }
+  };
 
   const handleSend = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (inputEl.current) {
       const message = inputEl.current.value;
-      const newMessages = [];
-      const response = await stateApi.interact(message, userID);
-
-      for (let i = 0; i < response.length; i++) {
-        const responseMessage = response[i];
-        if (responseMessage.type === 'end') {
-          setMessages([]);
-          return;
-        }
-
-        if (responseMessage.type === 'speak') {
-          newMessages.push(responseMessage.payload.message);
-        }
-      }
-
-      setMessages([...messages, message, ...newMessages]);
+      setPreviousInteractions([...previousInteractions, currentInteraction]);
+      setCurrentInteraction({ message, traces: [] });
+      sendInteraction(message);
     }
+  };
+
+  const startChatSection = () => {
+    sendInteraction('');
+  };
+
+  const finishChatSection = () => {
+    setPreviousSections([...previousSections, { interactions: previousInteractions }]);
+    setPreviousInteractions([]);
+    setCurrentInteraction({ message: '', traces: [] });
+    sendInteraction('');
   };
 
   useEffect(() => {
     if (inputEl.current) {
       inputEl.current.value = '';
     }
-  }, [messages]);
+  }, [currentInteraction]);
+
+  useEffect(() => {
+    if (currentInteraction.traces.find((trace) => trace.type === 'end')) {
+      setTimeout(finishChatSection, 1000);
+    }
+  }, [currentInteraction]);
+
+  useEffect(startChatSection, []);
 
   return (
     <ChatContainer>
@@ -51,9 +79,46 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
 
         <ChatInteraction>
           <ChatInteractionList>
-            {messages?.map((message, idx) => (
-              <div key={idx}>{message}</div>
-            ))}
+            {previousSections.map((section, idx) => {
+              return (
+                <div key={idx} style={{ opacity: '0.5' }}>
+                  {section.interactions.map((interaction, idx) => {
+                    return (
+                      <div key={idx}>
+                        <div>{interaction.message}</div>
+                        {interaction.traces.map((trace, idx) => (
+                          <div key={idx}>{trace.payload.message}</div>
+                        ))}
+                        <div>end of section</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+
+            <div>section started</div>
+
+            {previousInteractions &&
+              previousInteractions.map((interaction, idx) => {
+                return (
+                  <div key={`previous-interactions-${idx}`}>
+                    <div>{interaction.message}</div>
+                    {interaction.traces.map((trace, idx) => (
+                      <div key={`previous-interaction-${idx}`}>{trace.payload?.message}</div>
+                    ))}
+                  </div>
+                );
+              })}
+
+            {currentInteraction && (
+              <div>
+                <div>{currentInteraction.message}</div>
+                {currentInteraction.traces.map((trace, idx) => (
+                  <div key={`current-interaction-${idx}`}>{trace.payload?.message}</div>
+                ))}
+              </div>
+            )}
           </ChatInteractionList>
         </ChatInteraction>
 
