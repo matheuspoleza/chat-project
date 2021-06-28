@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import ChatLoading from '../../components/ChatLoading';
 import ChatMessage from '../../components/ChatMessage';
 import ChatTraces from '../../components/ChatTraces';
+import LoadingPage from '../../components/LoadingPage';
 import useChatSection from '../../hooks/useChatSection';
 import useUser from '../../hooks/useUser';
 import { ChatContainer, ChatInteraction, ChatInteractionList } from './Chat.styles';
@@ -42,7 +43,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
 
   React.useEffect(scrollToNewMessage, [chatSection.interactions]);
 
-  if (isCreatingSection) return <div>Starting your chat section ...</div>;
+  if (isCreatingSection) return <LoadingPage message="Starting your chat section ..." />;
 
   return (
     <ChatContainer>
