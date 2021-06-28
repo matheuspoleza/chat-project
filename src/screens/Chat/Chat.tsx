@@ -25,6 +25,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
   const [currentInteraction, setCurrentInteraction] = useState<Interaction>({ message: '', traces: [] });
   const [previousSections, setPreviousSections] = useState<Section[]>([]);
   const inputEl = useRef<HTMLInputElement>(null);
+  const messageEl = useRef<HTMLDivElement>(null);
 
   const sendInteraction = async (message: string) => {
     if (!currentInteraction) return;
@@ -44,6 +45,12 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
       setPreviousInteractions([...previousInteractions, currentInteraction]);
       setCurrentInteraction({ message, traces: [] });
       sendInteraction(message);
+    }
+  };
+
+  const scrollToNewMessage = () => {
+    if (messageEl.current) {
+      messageEl.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -69,6 +76,8 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
       setTimeout(finishChatSection, 1000);
     }
   }, [currentInteraction]);
+
+  React.useEffect(scrollToNewMessage, [currentInteraction]);
 
   useEffect(startChatSection, []);
 
@@ -120,6 +129,8 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
               </div>
             )}
           </ChatInteractionList>
+
+          <div ref={messageEl} />
         </ChatInteraction>
 
         <form className="ui reply form" onSubmit={handleSend}>
