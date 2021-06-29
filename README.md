@@ -1,16 +1,13 @@
 # Voiceflow Interview Frontend Project 💬
 
+# Presentation
+
 # Decisions
 
-- Redux: Nothing too much concept here. We could do it with useReducer and context API as well, whatever because of timing and mainly because boilerplate redux toolkit helped me to setup it. Besides that for caching I'm using the redux persistor that already satisfies the business requirement without too much effort.
+- Redux: Nothing too much concept here. We could do it with reducer and context API as well, whatever because of timing and mainly because the boilerplate redux toolkit helped me to set up it. Besides that redux-toolkit uses Immer that help us creating a proxy object for store reducer, so we can code mutable code but it'll be immutable behind the scenes.
 
-- Custom hooks: I created custom hooks to abstract data fetching. The idea it's to hide the logic how to get this data from the screens/components.
+- Caching: For caching I'm using the redux persistor that already satisfies the business requirement without too much effort.
 
-- Tests: I couldn't make time to test everything, so I covered more integrations tests inside the screens. With integrations tests like this we can cover more behaviors.
+- Custom hooks: I created custom hooks to abstract data fetching. The idea's to hide the logic of how to get this data from the screens/components.
 
-# To do
-
-- [x] Terminar testes do dashboard
-- [] Espaçamento create new user
-- [] Criar loom vídeo para readme
-- [] Terminar de escrever o readme
+- Tests: I couldn't make time to test everything, so I covered more integrations tests inside the screens. With integrations tests like this, we can cover more behaviors.
