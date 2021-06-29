@@ -1,5 +1,6 @@
 /* eslint no-param-reassign: 0 */ // --> OFF
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { internet } from 'faker';
 
 import { UsersState } from './types';
 
@@ -12,7 +13,7 @@ export const usersSlice = createSlice({
     createUser: (state, action: PayloadAction<string>) => {
       const id = action.payload.toLowerCase();
       const name = action.payload;
-      const avatar = 'https://semantic-ui.com/images/avatar2/small/matthew.png';
+      const avatar = internet.avatar();
 
       state[id] = { id, name, avatar };
     },
