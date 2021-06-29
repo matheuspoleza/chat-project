@@ -38,10 +38,10 @@ const Dashboard: React.FC<RouteComponentProps> = ({ history }) => {
 
       <form onSubmit={handleCreateNewUser}>
         <Input className="ui input">
-          <input ref={ref} placeholder="New user name" />
+          <input ref={ref} placeholder="New user name" data-testid="new-user-input" />
         </Input>
 
-        <button type="submit" className="ui icon button">
+        <button type="submit" className="ui icon button" data-testid="new-user-button">
           <i className="plus icon"></i>
         </button>
       </form>

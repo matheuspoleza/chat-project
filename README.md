@@ -7,3 +7,10 @@
 - Custom hooks: I created custom hooks to abstract data fetching. The idea it's to hide the logic how to get this data from the screens/components.
 
 - Tests: I couldn't make time to test everything, so I covered more integrations tests inside the screens. With integrations tests like this we can cover more behaviors.
+
+# To do
+
+- [] Terminar testes do dashboard
+- [] Espaçamento create new user
+- [] Criar loom vídeo para readme
+- [] Terminar de escrever o readme
