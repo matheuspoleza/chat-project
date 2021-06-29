@@ -8,4 +8,4 @@
 - [x] User's chat history and state should be stored even if the page refreshes
 - [x] Start with 0 users, but should be able to create new ones, and delete old ones
 - [x] Chat should always scroll to the most recent message when updated
-- [ ] Set up a build to turn the Typescript project into a browser compatible JS static Single Page Application
+- [x] Set up a build to turn the Typescript project into a browser compatible JS static Single Page Application
