@@ -6,3 +6,4 @@ node_modules/
 jspm_packages/
 
 yarn-error.log
+.DS_Store
