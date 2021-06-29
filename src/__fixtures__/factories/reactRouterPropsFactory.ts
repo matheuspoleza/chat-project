@@ -1,10 +1,6 @@
 import { RouteComponentProps } from 'react-router-dom';
 
-const reactRouterPropsFactory = <Props = null, State = null, Search = null>(
-  props: any = {},
-  state: any = {},
-  search: any = null
-): RouteComponentProps<Props, any, State> => {
+const reactRouterPropsFactory = <Props = null, State = null>(props: any = {}, state: any = {}): RouteComponentProps<Props, any, State> => {
   return {
     location: {
       hash: '/',

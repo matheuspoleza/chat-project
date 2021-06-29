@@ -3,8 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import stateApi from '../../api/stateApi';
 import { deleteSection as deleteSectionAction } from '../../store/chat/reducer';
 import { selectAllSections } from '../../store/chat/selectors';
+import { ChatSection } from '../../store/chat/types';
 
-const useChatSections = () => {
+interface UseChatSection {
+  sections: { [key in string]: ChatSection };
+  deleteSection: (userID: string) => Promise<void>;
+}
+
+const useChatSections = (): UseChatSection => {
   const dispatch = useDispatch();
   const sections = useSelector(selectAllSections);
 

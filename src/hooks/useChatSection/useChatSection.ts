@@ -4,9 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import stateApi from '../../api/stateApi';
 import { addInteractionTrace, createInteraction, createSection, sendInteractionTraces } from '../../store/chat/reducer';
 import { selectIsLoading, selectSectionByUserID } from '../../store/chat/selectors';
+import { ChatSection } from '../../store/chat/types';
 import playAudio from '../../utils/playAudio';
 
-const useChatSection = (userID: string) => {
+interface UseChatSection {
+  chatSection: ChatSection;
+  isLoading: boolean;
+  sendMessage: (message: string) => Promise<void>;
+  startSection: () => void;
+}
+
+const useChatSection = (userID: string): UseChatSection => {
   const chatSection = useSelector(selectSectionByUserID(userID));
   const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
