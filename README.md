@@ -12,3 +12,5 @@ https://user-images.githubusercontent.com/8049914/123819427-24f89480-d8d0-11eb-8
 **- Custom hooks:** I created custom hooks to abstract data fetching. The idea's to hide the logic of how to get this data from the screens/components.
 
 **- Tests:** I couldn't make time to test everything, so I covered more integrations tests inside the screens. With integrations tests like this, we can cover more behaviors.
+
+**Build**: I deployed the /build folder to surge.sh to make sure it was working https://impossible-giraffe.surge.sh/ 
