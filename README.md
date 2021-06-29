@@ -10,7 +10,7 @@
 
 # To do
 
-- [] Terminar testes do dashboard
+- [x] Terminar testes do dashboard
 - [] Espaçamento create new user
 - [] Criar loom vídeo para readme
 - [] Terminar de escrever o readme

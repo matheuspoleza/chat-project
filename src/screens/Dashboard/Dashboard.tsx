@@ -42,11 +42,9 @@ const Dashboard: React.FC<RouteComponentProps> = ({ history }) => {
         </Input>
 
         <button type="submit" className="ui icon button" data-testid="new-user-button">
-          <i className="plus icon"></i>
+          Create user
         </button>
       </form>
-
-      {users.length === 0 && <div>Create a new user</div>}
 
       <div className="ui middle aligned divided list">
         {users.map((user) => (
