@@ -8,7 +8,6 @@ export interface Interaction {
 export interface ChatSection {
   currentTraces: GeneralTrace[];
   interactions: Interaction[];
-  isLoading: boolean;
 }
 
 export type ChatSections = { [key in string]: ChatSection };

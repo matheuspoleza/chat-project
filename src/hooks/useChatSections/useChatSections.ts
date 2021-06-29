@@ -1,23 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import { deleteChatSection, startChatSection } from '../../store/chat/asyncActions';
+import stateApi from '../../api/stateApi';
+import { deleteSection as deleteSectionAction } from '../../store/chat/reducer';
 import { selectAllSections } from '../../store/chat/selectors';
 
 const useChatSections = () => {
   const dispatch = useDispatch();
   const sections = useSelector(selectAllSections);
 
-  const deleteSection = (userID: string) => {
-    dispatch(deleteChatSection(userID));
+  const deleteSection = async (userID: string) => {
+    dispatch(deleteSectionAction(userID));
+    await stateApi.deleteState(userID);
   };
 
-  const startSection = (userID: string) => {
-    if (!sections[userID]) {
-      dispatch(startChatSection(userID));
-    }
-  };
-
-  return { sections, deleteSection, startSection };
+  return { sections, deleteSection };
 };
 
 export default useChatSections;

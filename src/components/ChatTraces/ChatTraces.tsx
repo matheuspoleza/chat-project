@@ -1,6 +1,7 @@
 import { GeneralTrace, TraceType } from '@voiceflow/general-types';
 import React from 'react';
 
+import ChoiceMessage from '../ChoiceMessage';
 import Logo from '../Logo';
 import SpeakMessage from '../SpeakMessage';
 import VisualMessage from '../VisualMessage';
@@ -10,9 +11,14 @@ interface Props {
   traces: GeneralTrace[];
 }
 
-const MessageComponentMapper: { [key in TraceType]?: React.FC<any> } = {
+interface ComponentProps {
+  message: GeneralTrace;
+}
+
+const MessageComponentMapper: { [key in TraceType]?: React.FC<ComponentProps> } = {
   [TraceType.SPEAK]: SpeakMessage,
   [TraceType.VISUAL]: VisualMessage,
+  [TraceType.CHOICE]: ChoiceMessage,
 };
 
 const ChatTraces: React.FC<Props> = ({ traces }) => {

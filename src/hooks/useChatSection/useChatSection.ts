@@ -1,57 +1,53 @@
 import { GeneralTrace, TraceType } from '@voiceflow/general-types';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { sendChatMessage } from '../../store/chat/asyncActions';
-import { addTraceMessage, cleanCurrentTrace } from '../../store/chat/reducer';
-import { selectIsCreatingSection, selectSectionByUserID } from '../../store/chat/selectors';
+import stateApi from '../../api/stateApi';
+import { addInteractionTrace, createInteraction, createSection, sendInteractionTraces } from '../../store/chat/reducer';
+import { selectIsLoading, selectSectionByUserID } from '../../store/chat/selectors';
+import playAudio from '../../utils/playAudio';
 
 const useChatSection = (userID: string) => {
   const chatSection = useSelector(selectSectionByUserID(userID));
-  const isCreatingSection = useSelector(selectIsCreatingSection);
+  const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
 
-  const sendMessage = (message: string) => {
-    dispatch(sendChatMessage({ userID, message }));
-  };
-
   const sendTraceMessage = (trace: GeneralTrace) => {
-    dispatch(addTraceMessage({ userID, trace }));
+    dispatch(addInteractionTrace({ userID, trace }));
   };
 
-  const playAudio = (audioSource: string, onEnded: () => void) => {
-    const sound = new Audio(audioSource);
-    sound.addEventListener('ended', onEnded);
-    sound.play();
+  const isEnding = (traces: GeneralTrace[]) => {
+    return traces.some((trace) => trace.type === TraceType.END);
   };
 
-  const handleNewTraces = (counter = 0) => {
-    const traces = chatSection.currentTraces;
-    if (!traces) return;
+  const startSection = () => {
+    dispatch(createSection({ userID }));
+    sendMessage('');
+  };
 
-    const message = traces[counter];
-
-    if (counter === traces.length) {
-      dispatch(cleanCurrentTrace({ userID }));
-      return;
-    }
-
-    if (message.type === TraceType.SPEAK && message.payload.src) {
+  const handleNewTraces = async (traces: GeneralTrace[]) => {
+    for (let i = 0; i < traces.length; i++) {
+      const message = traces[i];
       sendTraceMessage(message);
-      playAudio(message.payload.src, () => handleNewTraces(counter + 1));
-    } else {
-      sendTraceMessage(message);
-      handleNewTraces(counter + 1);
+
+      if (message.type === TraceType.SPEAK && message.payload.src) {
+        // eslint-disable-next-line no-await-in-loop
+        await playAudio(message.payload.src);
+      }
+    }
+
+    if (isEnding(traces)) {
+      startSection();
     }
   };
 
-  useEffect(() => {
-    if (chatSection.currentTraces?.length > 0) {
-      handleNewTraces();
-    }
-  }, [chatSection.currentTraces]);
+  const sendMessage = async (message: string) => {
+    dispatch(createInteraction({ userID, message }));
+    const traces = await stateApi.interact(message, userID);
+    dispatch(sendInteractionTraces({ userID, traces }));
+    handleNewTraces(traces);
+  };
 
-  return { chatSection, isCreatingSection, sendMessage };
+  return { chatSection, startSection, isLoading, sendMessage };
 };
 
 export default useChatSection;

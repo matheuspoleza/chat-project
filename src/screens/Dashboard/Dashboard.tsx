@@ -7,7 +7,7 @@ import { Container, Input } from './Dashboard.styles';
 
 const Dashboard: React.FC<RouteComponentProps> = ({ history }) => {
   const { users, createUser, deleteUser } = useUsers();
-  const { sections, deleteSection, startSection } = useChatSections();
+  const { sections, deleteSection } = useChatSections();
   const ref = useRef<HTMLInputElement>(null);
 
   const handleCreateNewUser = (event: React.FormEvent) => {
@@ -22,8 +22,7 @@ const Dashboard: React.FC<RouteComponentProps> = ({ history }) => {
     deleteUser(userID);
   };
 
-  const handleStartChat = (userID: string) => {
-    startSection(userID);
+  const handleStartChat = async (userID: string) => {
     history.push(`/chat/${userID}`);
   };
 

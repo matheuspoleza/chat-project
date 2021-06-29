@@ -1,8 +1,6 @@
 /* eslint no-param-reassign: 0 */ // --> OFF
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GeneralTrace } from '@voiceflow/general-types';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { deleteChatSection, sendChatMessage, startChatSection } from './asyncActions';
 import { ChatSectionState } from './types';
 
 const initialState: ChatSectionState = {
@@ -14,55 +12,40 @@ export const chatSectionsSlice = createSlice({
   name: 'chatSections',
   initialState,
   reducers: {
-    cleanCurrentTrace: (state, action: PayloadAction<{ userID: string }>) => {
-      const { userID } = action.payload;
-      state.sections[userID].currentTraces = [];
-    },
-    addTraceMessage: (state, action: PayloadAction<{ userID: string; trace: GeneralTrace }>) => {
+    addInteractionTrace: (state, action) => {
       const { userID, trace } = action.payload;
       const { interactions } = state.sections[userID];
-      interactions[interactions.length - 1].traces?.push(trace);
-    },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(startChatSection.pending, (state) => {
-      state.isLoading = true;
-    });
-
-    builder.addCase(startChatSection.fulfilled, (state, action) => {
-      const { userID, interaction } = action.payload;
 
       state.isLoading = false;
+      interactions[interactions.length - 1].traces?.push(trace);
+    },
+    createInteraction: (state, action) => {
+      const { userID, message } = action.payload;
+
+      state.isLoading = true;
+      state.sections[userID].interactions.push({ message, traces: [] });
+    },
+    sendInteractionTraces: (state, action) => {
+      const { userID, traces } = action.payload;
+
+      state.sections[userID].currentTraces = traces;
+    },
+    createSection: (state, action) => {
+      const { userID } = action.payload;
 
       state.sections[userID] = {
-        currentTraces: interaction,
+        currentTraces: [],
         interactions: [{ message: '', traces: [] }],
-        isLoading: false,
       };
-    });
-
-    builder.addCase(sendChatMessage.pending, (state, action) => {
-      const { userID, message } = action.meta.arg;
-
-      state.sections[userID].interactions.push({ message, traces: [] });
-      state.sections[userID].isLoading = true;
-    });
-
-    builder.addCase(sendChatMessage.fulfilled, (state, action) => {
-      const { userID, interaction } = action.payload;
-
-      state.sections[userID].isLoading = false;
-      state.sections[userID].currentTraces = interaction;
-    });
-
-    builder.addCase(deleteChatSection.fulfilled, (state, action) => {
-      const userID = action.meta.arg;
+    },
+    deleteSection: (state, action) => {
+      const userID = action.payload;
 
       delete state.sections[userID];
-    });
+    },
   },
 });
 
-export const { addTraceMessage, cleanCurrentTrace } = chatSectionsSlice.actions;
+export const { addInteractionTrace, sendInteractionTraces, createInteraction, createSection, deleteSection } = chatSectionsSlice.actions;
 
 export default chatSectionsSlice.reducer;

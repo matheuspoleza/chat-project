@@ -4,7 +4,6 @@ import { RouteComponentProps } from 'react-router';
 import ChatLoading from '../../components/ChatLoading';
 import ChatMessage from '../../components/ChatMessage';
 import ChatTraces from '../../components/ChatTraces';
-import LoadingPage from '../../components/LoadingPage';
 import useChatSection from '../../hooks/useChatSection';
 import useUser from '../../hooks/useUser';
 import { ChatContainer, ChatInteraction, ChatInteractionList } from './Chat.styles';
@@ -16,7 +15,7 @@ interface Props {
 const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
   const { userID } = match.params;
   const { user } = useUser(userID);
-  const { chatSection, isCreatingSection, sendMessage } = useChatSection(userID);
+  const { chatSection, startSection, isLoading, sendMessage } = useChatSection(userID);
   const inputEl = React.useRef<HTMLInputElement>(null);
   const messageEl = React.useRef<HTMLDivElement>(null);
 
@@ -37,13 +36,16 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
     event.preventDefault();
     if (!inputEl.current) return;
     sendMessage(inputEl.current.value);
+    cleanInput();
   };
 
-  React.useEffect(cleanInput, [chatSection.interactions]);
+  React.useEffect(() => {
+    if (!chatSection) {
+      startSection();
+    }
+  }, []);
 
-  React.useEffect(scrollToNewMessage, [chatSection.interactions]);
-
-  if (isCreatingSection) return <LoadingPage message="Starting your chat section ..." />;
+  React.useEffect(scrollToNewMessage, [chatSection?.interactions]);
 
   return (
     <ChatContainer>
@@ -51,18 +53,16 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
         <h3 className="ui dividing header">{user?.name} Chat</h3>
 
         <ChatInteraction>
-          <ChatInteractionList>
-            {chatSection.interactions.map((interaction, idx) => (
-              <div key={`interactions-${idx}`}>
-                {interaction.message && <ChatMessage message={interaction.message} />}
-                {interaction.traces && <ChatTraces traces={interaction.traces} />}
-              </div>
-            ))}
-          </ChatInteractionList>
+          {chatSection?.interactions?.map((interaction, idx) => (
+            <ChatInteractionList key={`interactions-${idx}`}>
+              {interaction.message && <ChatMessage message={interaction.message} />}
+              {interaction.traces && <ChatTraces traces={interaction.traces} />}
+            </ChatInteractionList>
+          ))}
+
+          {isLoading && <ChatLoading />}
 
           <div ref={messageEl} />
-
-          {chatSection.isLoading && <ChatLoading />}
         </ChatInteraction>
 
         <form className="ui reply form" onSubmit={handleSend}>

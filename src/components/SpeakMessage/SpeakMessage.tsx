@@ -1,9 +1,9 @@
-import { SpeakTrace } from '@voiceflow/general-types';
+import { GeneralTrace } from '@voiceflow/general-types';
 import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  message: SpeakTrace;
+  message: GeneralTrace;
 }
 
 const SpeakMessageBox = styled.div`
