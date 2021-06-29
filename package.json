@@ -65,7 +65,6 @@
   "bugs": {
     "url": "https://github.com/voiceflow/frontend-project/issues"
   },
-  "homepage": "https://github.com/voiceflow/frontend-project/#readme",
   "browserslist": {
     "production": [
       ">0.2%",
