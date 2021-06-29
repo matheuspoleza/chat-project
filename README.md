@@ -1,11 +1,9 @@
 # Voiceflow Interview Frontend Project 💬
 
-# Requirements
+# Decisions
 
-- [x] The chat should be scrollable and go as far back as the conversation start
-- [x] Reset after a chat is finished
-- [x] The chat should play the MP3 audio if included in the `Speak` trace in the response, audio should never overlap.
-- [x] User's chat history and state should be stored even if the page refreshes
-- [x] Start with 0 users, but should be able to create new ones, and delete old ones
-- [x] Chat should always scroll to the most recent message when updated
-- [x] Set up a build to turn the Typescript project into a browser compatible JS static Single Page Application
+- Redux: Nothing too much concept here. We could do it with useReducer and context API as well, whatever because of timing and mainly because boilerplate redux toolkit helped me to setup it. Besides that for caching I'm using the redux persistor that already satisfies the business requirement without too much effort.
+
+- Custom hooks: I created custom hooks to abstract data fetching. The idea it's to hide the logic how to get this data from the screens/components.
+
+- Tests: I couldn't make time to test everything, so I covered more integrations tests inside the screens. With integrations tests like this we can cover more behaviors.
