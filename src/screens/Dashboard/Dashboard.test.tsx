@@ -2,8 +2,8 @@ import { createMemoryHistory } from 'history';
 import React from 'react';
 import { MemoryRouter, Router } from 'react-router';
 
-import reactRouterPropsFactory from '../../__tests__/factories/reactRouterPropsFactory';
-import { fireEvent, render, waitFor } from '../../__tests__/testUtils';
+import reactRouterPropsFactory from '../../__fixtures__/factories/reactRouterPropsFactory';
+import { fireEvent, render, waitFor } from '../../__fixtures__/testUtils';
 import App from '../../App';
 import { RootState } from '../../store';
 import { chatInitialState } from '../../store/chat/reducer';

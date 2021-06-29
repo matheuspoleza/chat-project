@@ -2,11 +2,11 @@ import { GeneralTrace } from '@voiceflow/general-types';
 import React from 'react';
 import { MemoryRouter } from 'react-router';
 
-import reactRouterPropsFactory from '../../__tests__/factories/reactRouterPropsFactory';
-import choiceResponse from '../../__tests__/fixtures/choiceResponse';
-import endFlowResponse from '../../__tests__/fixtures/endFlowResponse';
-import speakResponse from '../../__tests__/fixtures/speakResponse';
-import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '../../__tests__/testUtils';
+import reactRouterPropsFactory from '../../__fixtures__/factories/reactRouterPropsFactory';
+import choiceResponse from '../../__fixtures__/fixtures/choiceResponse';
+import endFlowResponse from '../../__fixtures__/fixtures/endFlowResponse';
+import speakResponse from '../../__fixtures__/fixtures/speakResponse';
+import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '../../__fixtures__/testUtils';
 import stateApi from '../../api/stateApi';
 import playAudio from '../../utils/playAudio';
 import Chat from './Chat';
