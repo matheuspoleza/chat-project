@@ -15,7 +15,7 @@ const ChatMessage: React.FC<Props> = ({ message }) => {
   return (
     <MessageContainer>
       <MessageBox>{message}</MessageBox>
-      <MessageImage alt="avatar" src={user.avatar} />
+      <MessageImage alt="avatar" src={user?.avatar} />
     </MessageContainer>
   );
 };

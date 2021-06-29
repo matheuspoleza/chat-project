@@ -42,9 +42,14 @@ const useChatSection = (userID: string) => {
 
   const sendMessage = async (message: string) => {
     dispatch(createInteraction({ userID, message }));
-    const traces = await stateApi.interact(message, userID);
-    dispatch(sendInteractionTraces({ userID, traces }));
-    handleNewTraces(traces);
+    try {
+      const traces = await stateApi.interact(message, userID);
+      dispatch(sendInteractionTraces({ userID, traces }));
+      handleNewTraces(traces);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    }
   };
 
   return { chatSection, startSection, isLoading, sendMessage };

@@ -5,7 +5,7 @@ import { Container, DotFlashing, Dots } from './ChatLoading.styles';
 
 const ChatLoading: React.FC = () => {
   return (
-    <Container>
+    <Container data-testid="chat-loading">
       <Logo />
 
       <Dots>

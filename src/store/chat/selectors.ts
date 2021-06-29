@@ -15,8 +15,9 @@ export const selectIsLoading = (state: RootState): boolean => state.chat.isLoadi
 export const selectIsLastChoice =
   (userID: string, trace: ChoiceTrace) =>
   (state: RootState): boolean => {
-    const { currentTraces } = state.chat.sections[userID];
-    const lastTrace = currentTraces[currentTraces.length - 1];
+    const section = state.chat.sections[userID];
+    if (!section) return false;
+    const lastTrace = section.currentTraces[section.currentTraces.length - 1];
 
     if (lastTrace.type === TraceType.CHOICE) {
       const button = lastTrace?.payload?.buttons[0];

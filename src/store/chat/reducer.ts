@@ -3,14 +3,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { ChatSectionState } from './types';
 
-const initialState: ChatSectionState = {
+export const chatInitialState: ChatSectionState = {
   sections: {},
   isLoading: false,
 };
 
 export const chatSectionsSlice = createSlice({
   name: 'chatSections',
-  initialState,
+  initialState: chatInitialState,
   reducers: {
     addInteractionTrace: (state, action) => {
       const { userID, trace } = action.payload;

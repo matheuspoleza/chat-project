@@ -20,7 +20,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
   const messageEl = React.useRef<HTMLDivElement>(null);
 
   const scrollToNewMessage = () => {
-    if (messageEl.current) {
+    if (messageEl.current && messageEl.current.scrollIntoView) {
       messageEl.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
@@ -54,7 +54,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
 
         <ChatInteraction>
           {chatSection?.interactions?.map((interaction, idx) => (
-            <ChatInteractionList key={`interactions-${idx}`}>
+            <ChatInteractionList data-testid="chat-trace-list" key={`interactions-${idx}`}>
               {interaction.message && <ChatMessage message={interaction.message} />}
               {interaction.traces && <ChatTraces traces={interaction.traces} />}
             </ChatInteractionList>
@@ -67,7 +67,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
 
         <form className="ui reply form" onSubmit={handleSend}>
           <div className="field">
-            <input ref={inputEl} placeholder="Start typing ..." />
+            <input ref={inputEl} data-testid="chat-input" placeholder="Start typing ..." />
           </div>
           <button type="submit" className="ui button">
             Send
