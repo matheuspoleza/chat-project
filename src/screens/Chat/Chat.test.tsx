@@ -4,7 +4,6 @@ import { MemoryRouter } from 'react-router';
 
 import reactRouterPropsFactory from '../../__fixtures__/factories/reactRouterPropsFactory';
 import choiceResponse from '../../__fixtures__/fixtures/choiceResponse';
-import endFlowResponse from '../../__fixtures__/fixtures/endFlowResponse';
 import speakResponse from '../../__fixtures__/fixtures/speakResponse';
 import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '../../__fixtures__/testUtils';
 import stateApi from '../../api/stateApi';
@@ -65,37 +64,12 @@ describe('Screens | Chat', () => {
 
     it('shows response trace', async () => {
       const message = 'I want a pizza';
-      jest.spyOn(stateApi, 'interact').mockImplementation(async (interactionMessage: string, userID: string) => {
-        if (message === interactionMessage) {
-          return choiceResponse;
-        }
-
-        return speakResponse;
-      });
-
+      mockInteractApi(choiceResponse);
       const screen = renderChatPage();
+
       sendMessage(message);
 
-      await waitFor(() => expect(screen.queryByText('Is this for take-away or delivery?')).not.toBeNull());
-      await waitFor(() => expect(screen.queryAllByTestId('chat-trace-list').length).toEqual(3));
-    });
-  });
-
-  describe('when is last step', () => {
-    it('restarts chat section', async () => {
-      const message = 'I want a pizza';
-      jest.spyOn(stateApi, 'interact').mockImplementation(async (interactionMessage: string, userID: string) => {
-        if (message === interactionMessage) {
-          return endFlowResponse;
-        }
-
-        return speakResponse;
-      });
-
-      const screen = renderChatPage();
-      sendMessage(message);
-
-      await waitFor(() => expect(screen.queryAllByTestId('chat-trace-list').length).toEqual(2));
+      await waitFor(() => expect(screen.queryAllByText('Is this for take-away or delivery?')?.length).toBeTruthy());
     });
   });
 });

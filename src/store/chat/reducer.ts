@@ -1,5 +1,5 @@
 /* eslint no-param-reassign: 0 */ // --> OFF
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ChatSectionState } from './types';
 
@@ -19,7 +19,7 @@ export const chatSectionsSlice = createSlice({
       state.isLoading = false;
       interactions[interactions.length - 1].traces?.push(trace);
     },
-    createInteraction: (state, action) => {
+    createInteraction: (state, action: PayloadAction<{ userID: string; message: string }>) => {
       const { userID, message } = action.payload;
 
       state.isLoading = true;

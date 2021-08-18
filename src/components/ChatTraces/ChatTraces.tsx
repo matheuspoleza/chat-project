@@ -25,7 +25,7 @@ const ChatTraces: React.FC<Props> = ({ traces }) => {
   if (traces.length === 0) return null;
 
   return (
-    <ResponseContainer>
+    <ResponseContainer data-testid="chat-traces-container">
       <Logo />
 
       <ResponseList>
@@ -33,7 +33,11 @@ const ChatTraces: React.FC<Props> = ({ traces }) => {
           const MessageComponent = MessageComponentMapper[message.type];
           if (!MessageComponent) return null;
 
-          return <MessageComponent key={idx} message={message} />;
+          return (
+            <div key={idx} data-testid="chat-trace-message">
+              <MessageComponent message={message} />
+            </div>
+          );
         })}
       </ResponseList>
     </ResponseContainer>

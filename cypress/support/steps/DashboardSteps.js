@@ -1,8 +1,10 @@
 /* global Given, Then, When */
 
+import faker from 'faker';
+
 import DashboardPage from '../pages/DashboardPage';
 
-const userName = 'Matheus';
+const userName = faker.name.firstName();
 
 Given('I access the dashboard page', () => {
   DashboardPage.accessSite();
