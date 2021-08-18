@@ -8,7 +8,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:e2e": "cypress run --browser chrome --no-exit",
     "eject": "react-scripts eject"
+  },
+  "cypress-cucumber-preprocessor": {
+    "step_definitions": "cypress/support/steps"
   },
   "repository": {
     "type": "git",
@@ -62,6 +66,7 @@
     "cypress": "^8.3.0",
     "cypress-cucumber-preprocessor": "^4.2.0",
     "eslint": "^7.27.0",
+    "eslint-plugin-cypress": "^2.11.3",
     "prettier": "^2.2.1",
     "prettier-stylelint": "^0.4.2",
     "ts-jest": "^27.0.3",
