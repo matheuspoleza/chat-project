@@ -1,4 +1,4 @@
-# Voiceflow Interview Frontend Project 💬
+# Chat project 💬
 
 # Preview
 https://user-images.githubusercontent.com/8049914/123819427-24f89480-d8d0-11eb-8efe-01ba08110688.mp4
