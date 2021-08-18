@@ -50,7 +50,7 @@ const Dashboard: React.FC<RouteComponentProps> = ({ history }) => {
         {users.map((user) => (
           <div className="item" key={user.id}>
             <div className="right floated content">
-              <button onClick={() => handleStartChat(user.id)} className="ui button">
+              <button onClick={() => handleStartChat(user.id)} className="ui button" data-testid={`start-chat-button-${user.name}`}>
                 {sections[user.id] ? 'Open chat' : 'Start chat'}
               </button>
 

@@ -1,19 +1,18 @@
-/* global Given, Then, When, And */
+/* global Given, Then, When */
 
 import DashboardPage from '../pages/DashboardPage';
 
+const userName = 'Matheus';
+
 Given('I access the dashboard page', () => {
-  DashboardPage.acessarSite();
+  DashboardPage.accessSite();
 });
 
-When('I fill the user name', () => {
-  DashboardPage.clicarBotaoPaginaLogin();
-});
-
-And('I click on submit', () => {
-  DashboardPage.clicarBotaoPaginaLogin();
+When('I fill a new user name', () => {
+  DashboardPage.fillsUserName(userName);
+  DashboardPage.submitsUser();
 });
 
 Then('the user is added to users list', () => {
-  DashboardPage.visualizarBotaoRecuperarSenha();
+  DashboardPage.verifiesUserStartSection(userName);
 });

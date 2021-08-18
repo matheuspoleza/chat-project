@@ -1,10 +1,7 @@
 const DashboardElements = {
-  botaoLogin: () => {
-    return '.header__profile-wrapper > :nth-child(2)';
-  },
-  botaoRecuperarSenha: () => {
-    return '.login__form__forgot-password';
-  },
+  newUserInput: () => 'new-user-input',
+  createUserSubmit: () => 'new-user-button',
+  startChatButton: (userName) => `start-chat-button-${userName}`,
 };
 
 export default DashboardElements;
