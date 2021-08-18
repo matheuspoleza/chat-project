@@ -69,7 +69,7 @@ const Chat: React.FC<RouteComponentProps<Props>> = ({ match }) => {
           <div className="field">
             <input ref={inputEl} data-testid="chat-input" placeholder="Start typing ..." />
           </div>
-          <button type="submit" className="ui button">
+          <button type="submit" className="ui button" data-testid="chat-submit-button">
             Send
           </button>
         </form>
